@@ -2,6 +2,7 @@ const Core = require('@actions/core');
 const Github = require('@actions/github');
 const Path = require("path")
 const fs = require('fs')
+const http = require('http')
 
 try {
     // Get octokit
@@ -22,14 +23,36 @@ try {
             });
         }
     })
-    // Get package according to platform
+    // Get package link according to platform
     .then(release => {
         const dev_suffix = (Core.getInput('dev') == "true") ? "-dev" : "";
         const platform_map = {
             'linux' : new RegExp(`wasmvm${dev_suffix}_.*\.deb`),
             'darwin': new RegExp(`WasmVM${dev_suffix}\.pkg`)
-        }
-        console.log(release.data.assets.find(asset => asset.name.match(platform_map[process.platform])).browser_download_url)
+        };
+        return release.data.assets.find(asset => asset.name.match(platform_map[process.platform]));
+    })
+    // Download package
+    .then(package => {
+        return new Promise(resolve => {
+            const file_path = Path.resolve(package.name);
+            const fout = fs.createWriteStream(file_path);
+            http.get(package.browser_download_url, res => {
+                res.pipe(fout);
+                fout.on('finish', () => {
+                    fout.close(() => {
+                        resolve(file_path)
+                    })
+                })
+            })
+        })
+    })
+    .then(file_path => {
+        fs.readdir((err, files) => {
+            files.forEach(element => {
+                console.log(element)
+            });
+        })
     })
 
     // // Read & parse release note
