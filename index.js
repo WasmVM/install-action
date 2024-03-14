@@ -2,7 +2,7 @@ const Core = require('@actions/core');
 const Github = require('@actions/github');
 const Path = require("path");
 const fs = require('fs');
-const https = require('https');
+const download = require('download');
 const child_process = require('child_process');
 
 try {
@@ -35,17 +35,11 @@ try {
     })
     // Download package
     .then(package => {
-        return new Promise(resolve => {
-            const file_path = Path.resolve(package.name);
-            const fout = fs.createWriteStream(file_path);
-            https.get(package.browser_download_url, res => {
-                res.pipe(fout);
-                fout.on('finish', () => {
-                    fout.close(() => {
-                        resolve(file_path)
-                    })
-                })
-            })
+        const file_path = Path.resolve(package.name);
+        return download(package.browser_download_url)
+        .then(() => {
+            console.log("WasmVM package downloaded");
+            return file_path;
         })
     })
     .then(file_path => {
