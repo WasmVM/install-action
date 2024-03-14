@@ -1,20 +1,10 @@
-name: 'release-action'
-description: 'A GitHub Action to publish release by release API'
+name: 'install-action'
+description: 'GitHub action to get & install WasmVM'
 inputs:
-  note:
-    description: 'Release note file'
-    required: true
-    default: 'RELEASE.md'
-  assets:
-    description: 'Assets of this release'
+  version:
+    description: 'Release version'
     required: false
-  token:
-    description: 'GitHub API token'
-    required: true
-  draft:
-    description: 'Is draft release?'
-    required: true
-    default: false
+    default: 'RELEASE.md'
 runs:
   using: 'node20'
   main: 'dist/index.js'
