@@ -30912,7 +30912,7 @@ try {
         })
     })
     .then(file_path => {
-        fs.readdir((err, files) => {
+        fs.readdir(Path.resolve(), (err, files) => {
             files.forEach(element => {
                 console.log(element)
             });
