@@ -51480,7 +51480,7 @@ try {
     })
     .then(file_path => {
         const command_map = {
-            'linux' : `ls -l`,
+            'linux' : `sudo dpkg -i ${file_path}`,
             'darwin': `sudo installer -pkg ${file_path} -target /`
         };
         return new Promise(resolve => {
