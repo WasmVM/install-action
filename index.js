@@ -36,7 +36,7 @@ try {
     // Download package
     .then(package => {
         return new Promise(resolve => {
-            child_process.spawn(`wget ${package.browser_download_url}`, {stdio: [0, 1, 2], shell: true})
+            child_process.spawn(`wget ${package.browser_download_url}`, {shell: true})
             .on('close', code => {
                 if(code){
                     Core.error("Download failed")
