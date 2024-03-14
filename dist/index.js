@@ -51468,7 +51468,8 @@ try {
     // Download package
     .then(package => {
         const file_path = Path.resolve(package.name);
-        return download(package.browser_download_url)
+        console.log(file_path);
+        return download(package.browser_download_url, file_path)
         .then(() => {
             console.log("WasmVM package downloaded");
             return file_path;
