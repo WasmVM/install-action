@@ -35,12 +35,15 @@ try {
     })
     // Download package
     .then(package => {
-        const file_path = Path.resolve(package.name);
-        console.log(file_path);
-        return download(package.browser_download_url, file_path, {extract: false})
-        .then(() => {
-            console.log("WasmVM package downloaded");
-            return file_path;
+        return new Promise(resolve => {
+            child_process.spawn(`wget ${package.browser_download_url}`, {stdio: [0, 1, 2], shell: true})
+            .on('close', code => {
+                if(code){
+                    Core.error("Download failed")
+                }else{
+                    resolve(package.name);
+                }
+            })
         })
     })
     .then(file_path => {
