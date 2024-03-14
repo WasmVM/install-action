@@ -7,7 +7,6 @@ inputs:
   version:
     description: 'Release version'
     required: false
-    default: 'RELEASE.md'
   dev:
     description: 'Is dev package?'
     required: true
