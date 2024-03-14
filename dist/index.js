@@ -30866,7 +30866,7 @@ const Core = __nccwpck_require__(2186);
 const Github = __nccwpck_require__(5438);
 const Path = __nccwpck_require__(1017)
 const fs = __nccwpck_require__(7147)
-const http = __nccwpck_require__(3685)
+const https = __nccwpck_require__(5687)
 
 try {
     // Get octokit
@@ -30901,7 +30901,7 @@ try {
         return new Promise(resolve => {
             const file_path = Path.resolve(package.name);
             const fout = fs.createWriteStream(file_path);
-            http.get(package.browser_download_url, res => {
+            https.get(package.browser_download_url, res => {
                 res.pipe(fout);
                 fout.on('finish', () => {
                     fout.close(() => {

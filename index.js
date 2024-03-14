@@ -2,7 +2,7 @@ const Core = require('@actions/core');
 const Github = require('@actions/github');
 const Path = require("path")
 const fs = require('fs')
-const http = require('http')
+const https = require('https')
 
 try {
     // Get octokit
@@ -37,7 +37,7 @@ try {
         return new Promise(resolve => {
             const file_path = Path.resolve(package.name);
             const fout = fs.createWriteStream(file_path);
-            http.get(package.browser_download_url, res => {
+            https.get(package.browser_download_url, res => {
                 res.pipe(fout);
                 fout.on('finish', () => {
                     fout.close(() => {
