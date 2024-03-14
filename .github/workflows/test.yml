@@ -16,6 +16,7 @@ jobs:
       uses: ./
       with:
         token: ${{secrets.GITHUB_TOKEN}}
+        dev: true
   
   macos:
     name: Test MacOS
@@ -27,3 +28,4 @@ jobs:
       uses: ./
       with:
         token: ${{secrets.GITHUB_TOKEN}}
+        dev: true
