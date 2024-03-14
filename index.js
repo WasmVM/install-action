@@ -6,6 +6,28 @@ const fs = require('fs')
 try {
     // Get octokit
     const Octokit = Github.getOctokit(Core.getInput('token'));
+    // Get release
+    Promise.resolve(Core.getInput('version'))
+    .then(version => {
+        if(version){
+            return Octokit.rest.repos.getReleaseByTag({
+                owner: "WasmVM",
+                repo: "WasmVM",
+                tag: version
+            });
+        }else{
+            return Octokit.rest.repos.getLatestRelease({
+                owner: "WasmVM",
+                repo: "WasmVM"
+            });
+        }
+    })
+    // Get package according to platform
+    .then(release => {
+        console.log(Core.getInput('dev'))
+        console.dir(release)
+    })
+
     // // Read & parse release note
     // let note_content = fs.readFileSync(Path.resolve(Core.getInput('note')), {encoding: 'utf8'});
     // const [tag_str, tag_name] = note_content.match(/^\`(.*)\`\n/);
