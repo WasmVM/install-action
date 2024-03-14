@@ -28996,6 +28996,14 @@ module.exports = require("buffer");
 
 /***/ }),
 
+/***/ 2081:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
+
+/***/ }),
+
 /***/ 6206:
 /***/ ((module) => {
 
@@ -30864,9 +30872,10 @@ var __webpack_exports__ = {};
 (() => {
 const Core = __nccwpck_require__(2186);
 const Github = __nccwpck_require__(5438);
-const Path = __nccwpck_require__(1017)
-const fs = __nccwpck_require__(7147)
-const https = __nccwpck_require__(5687)
+const Path = __nccwpck_require__(1017);
+const fs = __nccwpck_require__(7147);
+const https = __nccwpck_require__(5687);
+const child_process = __nccwpck_require__(2081);
 
 try {
     // Get octokit
@@ -30912,11 +30921,23 @@ try {
         })
     })
     .then(file_path => {
-        fs.readdir(Path.resolve(), (err, files) => {
-            files.forEach(element => {
-                console.log(element)
-            });
+        const command_map = {
+            'linux' : `sudo apt-get install -y ${file_path}`,
+            'darwin': `sudo installer -pkg ${file_path} -target /`
+        };
+        return new Promise(resolve => {
+            child_process.spawn(command_map[process.platform], {stdio: [0, 1, 2], shell: true})
+            .on('close', code => {
+                if(code){
+                    Core.error("Install failed")
+                }else{
+                    resolve();
+                }
+            })
         })
+    })
+    .then(() => {
+        console.log("WasmVM installed")
     })
 
     // // Read & parse release note

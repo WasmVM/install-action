@@ -1,8 +1,9 @@
 const Core = require('@actions/core');
 const Github = require('@actions/github');
-const Path = require("path")
-const fs = require('fs')
-const https = require('https')
+const Path = require("path");
+const fs = require('fs');
+const https = require('https');
+const child_process = require('child_process');
 
 try {
     // Get octokit
@@ -48,12 +49,23 @@ try {
         })
     })
     .then(file_path => {
-        // FIXME:
-        fs.readdir(Path.resolve(), (err, files) => {
-            files.forEach(element => {
-                console.log(element)
-            });
+        const command_map = {
+            'linux' : `sudo apt-get install -y ${file_path}`,
+            'darwin': `sudo installer -pkg ${file_path} -target /`
+        };
+        return new Promise(resolve => {
+            child_process.spawn(command_map[process.platform], {stdio: [0, 1, 2], shell: true})
+            .on('close', code => {
+                if(code){
+                    Core.error("Install failed")
+                }else{
+                    resolve();
+                }
+            })
         })
+    })
+    .then(() => {
+        console.log("WasmVM installed")
     })
 
     // // Read & parse release note
