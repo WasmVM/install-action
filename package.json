@@ -1,0 +1,26 @@
+{
+  "name": "install-action",
+  "version": "1.0.0",
+  "description": "GitHub action to get & install WasmVM",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WasmVM/install-action.git"
+  },
+  "scripts": {
+    "build": "ncc build index.js -o dist"
+  },
+  "author": "Luis Hsu",
+  "license": "Apache",
+  "bugs": {
+    "url": "https://github.com/WasmVM/install-action/issues"
+  },
+  "homepage": "https://github.com/WasmVM/install-action",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.1"
+  }
+}
