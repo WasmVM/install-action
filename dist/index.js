@@ -30888,8 +30888,12 @@ try {
     })
     // Get package according to platform
     .then(release => {
-        console.log(Core.getInput('dev'))
-        console.dir(release)
+        const dev_suffix = (Core.getInput('dev') == "true") ? "-dev" : "";
+        const platform_map = {
+            'linux' : new RegExp(`wasmvm${dev_suffix}.*\.deb`),
+            'darwin': new RegExp(`WasmVM${dev_suffix}.*\.pkg`)
+        }
+        console.log(release.data.assets.find(asset => asset.name.match(platform_map[process.platform])).browser_download_url)
     })
 
     // // Read & parse release note
