@@ -1,6 +1,9 @@
 name: 'install-action'
 description: 'GitHub action to get & install WasmVM'
 inputs:
+  token:
+    description: 'GitHub API token'
+    required: true
   version:
     description: 'Release version'
     required: false
