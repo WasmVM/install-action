@@ -51461,7 +51461,7 @@ try {
         const dev_suffix = (Core.getInput('dev') == "true") ? "-dev" : "";
         const platform_map = {
             'linux' : new RegExp(`wasmvm${dev_suffix}_.*\.deb`),
-            'darwin': new RegExp(`WasmVM${dev_suffix}\.pkg`)
+            'darwin': new RegExp(`WasmVM${dev_suffix}.*\.pkg`)
         };
         return release.data.assets.find(asset => asset.name.match(platform_map[process.platform]));
     })
